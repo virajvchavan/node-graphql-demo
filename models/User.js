@@ -1,33 +1,6 @@
 const mongoose = require("mongoose");
 let Schema = mongoose.Schema;
 
-let userSchema = new Schema(
-    {
-        FirstName: String,
-        MiddleName: String,
-        LastName: String,
-        EmployeeID: String,
-        JobTitle: String,
-        JoiningDate: Date,
-        Manager: String,
-        PersonalFirstName: String,
-        PersonalMiddleName: String,
-        PersonalLastName: String,
-        Salutation: String,
-        PersonalEmail: String,
-        Mobile: String,
-        UpdatedBy: String,
-        EmergencyContacts: [EmergencyContactSchema],
-        Dependents: [DependentSchema],
-        Addresses: [AddressSchema],
-        PreviousEmployments: [PreviousEmploymentSchema],
-        Schooling: [SchoolingSchema],
-        HigherEducation: [HigherEducationSchema],
-        Certifications: [CertificationSchema],
-    },
-    { timestamps: true }
-);
-
 let EmergencyContactSchema = new Schema({
     Name: String,
     Relationship: String,
@@ -90,7 +63,34 @@ let HigherEducationSchema = new Schema({
 let CertificationSchema = new Schema({
     CertificationName: String,
     Completion: Date,
-    Duration: String
+    Duration: String,
 });
 
-module.exports = mongoose.model('User', userSchema);
+let userSchema = new Schema(
+    {
+        FirstName: String,
+        MiddleName: String,
+        LastName: String,
+        EmployeeID: String,
+        JobTitle: String,
+        JoiningDate: Date,
+        Manager: String,
+        PersonalFirstName: String,
+        PersonalMiddleName: String,
+        PersonalLastName: String,
+        Salutation: String,
+        PersonalEmail: String,
+        Mobile: String,
+        UpdatedBy: String,
+        EmergencyContacts: [EmergencyContactSchema],
+        Dependents: [DependentSchema],
+        Addresses: [AddressSchema],
+        PreviousEmployments: [PreviousEmploymentSchema],
+        Schooling: [SchoolingSchema],
+        HigherEducation: [HigherEducationSchema],
+        Certifications: [CertificationSchema],
+    },
+    { timestamps: true }
+);
+
+module.exports = userSchema;

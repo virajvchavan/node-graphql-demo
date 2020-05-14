@@ -11,7 +11,10 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
-    "mongoose": "^5.9.13"
+    "express-graphql": "^0.9.0",
+    "graphql": "^15.0.0",
+    "mongoose": "^5.9.13",
+    "mongoose-schema-to-graphql": "^2.8.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.3"
