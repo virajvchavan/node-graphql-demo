@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require("mongoose");
-const User = require('./models/User.rb');
+const User = require('./models/User.js');
 const app = express();
 
 const url = "mongodb+srv://viraj:virajvchavan@cluster0-3jswv.mongodb.net/test?retryWrites=true&w=majority";
