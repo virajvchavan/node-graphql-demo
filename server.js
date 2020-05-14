@@ -8,6 +8,7 @@ const {
     GraphQLList,
     GraphQLNonNull,
     GraphQLID,
+    GraphQLString
 } = require("graphql");
 const userSchema = require('./models/User.js');
 
@@ -44,6 +45,21 @@ const graphQLSchema = new GraphQLSchema({
                 },
                 resolve: (root, args, context, info) => {
                     return User.findById(args.id).exec();
+                },
+            },
+        },
+    }),
+    mutation: new GraphQLObjectType({
+        name: "Mutation",
+        fields: {
+            user: {
+                type: userType,
+                args: {
+                    FirstName: { type: GraphQLNonNull(GraphQLString) },
+                },
+                resolve: (root, args, context, info) => {
+                    var user = new User(args);
+                    return user.save();
                 },
             },
         },
