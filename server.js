@@ -41,10 +41,10 @@ const graphQLSchema = new GraphQLSchema({
             user: {
                 type: userType,
                 args: {
-                    id: { type: GraphQLNonNull(GraphQLID) },
+                    FirstName: { type: GraphQLNonNull(GraphQLString) },
                 },
                 resolve: (root, args, context, info) => {
-                    return User.findById(args.id).exec();
+                    return User.findOne({FirstName: args.FirstName}).exec();
                 },
             },
         },
@@ -52,7 +52,7 @@ const graphQLSchema = new GraphQLSchema({
     mutation: new GraphQLObjectType({
         name: "Mutation",
         fields: {
-            user: {
+            createUser: {
                 type: userType,
                 args: {
                     FirstName: { type: GraphQLNonNull(GraphQLString) },
