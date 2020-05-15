@@ -66,33 +66,33 @@ let CertificationSchema = new Schema({
     Duration: String,
 });
 
-let userSchema = new Schema(
-    {
-        FirstName: String,
-        MiddleName: String,
-        LastName: String,
-        EmployeeID: String,
-        JobTitle: String,
-        JoiningDate: Date,
-        Manager: String,
-        PersonalFirstName: String,
-        PersonalMiddleName: String,
-        PersonalLastName: String,
-        Salutation: String,
-        PersonalEmail: String,
-        Mobile: String,
-        UpdatedBy: String,
-        EmergencyContacts: [EmergencyContactSchema],
-        Dependents: [DependentSchema],
-        Addresses: [AddressSchema],
-        PreviousEmployments: [PreviousEmploymentSchema],
-        Schooling: [SchoolingSchema],
-        HigherEducation: [HigherEducationSchema],
-        Certifications: [CertificationSchema],
-    },
-    { timestamps: true }
-);
+let userFields = {
+    FirstName: String,
+    MiddleName: String,
+    LastName: String,
+    EmployeeID: String,
+    JobTitle: String,
+    JoiningDate: Date,
+    Manager: String,
+    PersonalFirstName: String,
+    PersonalMiddleName: String,
+    PersonalLastName: String,
+    Salutation: String,
+    PersonalEmail: String,
+    Mobile: String,
+    UpdatedBy: String,
+    EmergencyContacts: [EmergencyContactSchema],
+    Dependents: [DependentSchema],
+    Addresses: [AddressSchema],
+    PreviousEmployments: [PreviousEmploymentSchema],
+    Schooling: [SchoolingSchema],
+    HigherEducation: [HigherEducationSchema],
+    Certifications: [CertificationSchema],
+}
+
+let userSchema = new Schema(userFields, { timestamps: true });
 
 module.exports = {
-    userSchema
+    userSchema,
+    userFields
 };

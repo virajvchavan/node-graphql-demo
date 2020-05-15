@@ -10,7 +10,7 @@ const {
     GraphQLID,
     GraphQLString
 } = require("graphql");
-const {userSchema} = require('./models/User.js');
+const {userSchema, userFields} = require('./models/User.js');
 
 const app = express();
 
@@ -25,12 +25,42 @@ const graphQLConfig = {
     exclude: ["_id"], //fields which you want to exclude from mongoose schema
 };
 let userType = createType(graphQLConfig);
+
+
+let filterInputFields = (userFields) => {
+    [
+        "FirstName",
+        "MiddleName",
+        "LastName",
+        "EmployeeID",
+        "JobTitle",
+        "PersonalFirstName",
+        "PersonalMiddleName",
+        "PersonalLastName",
+        "Salutation",
+        "Manager",
+    ].forEach((field) => {
+        delete userFields[field];
+    });
+    return userFields;
+};
+
+let inputSchema = mongoose.Schema(filterInputFields(userFields));
+
+let inputTypeForUpdate = createType({
+    name: 'inputForUpdate',
+    description: 'Update User Schema',
+    class: "GraphQLInputObjectType",
+    schema: inputSchema,
+    exclude: ["_id"]
+});
+
 let inputType = createType({
-    name: 'input',
-    description: 'Address Schema',
+    name: "inputForCreate",
+    description: "Create User Schema",
     class: "GraphQLInputObjectType",
     schema: userSchema,
-    exclude: ["_id"]
+    exclude: ["_id"],
 });
 
 let User = mongoose.model("User", userSchema);
@@ -48,10 +78,10 @@ const graphQLSchema = new GraphQLSchema({
             user: {
                 type: userType,
                 args: {
-                    FirstName: { type: GraphQLNonNull(GraphQLString) },
+                    id: { type: GraphQLNonNull(GraphQLString) },
                 },
                 resolve: (root, args, context, info) => {
-                    return User.findOne({FirstName: args.FirstName}).exec();
+                    return User.findOne({FirstName: args.id}).exec();
                 },
             },
         },
@@ -65,10 +95,24 @@ const graphQLSchema = new GraphQLSchema({
                     input: { type: inputType },
                 },
                 resolve: (root, args, context, info) => {
-                    var user = new User(args.input);
+                    let user = new User(args.input);
                     return user.save();
                 },
             },
+            updateUser: {
+                type: userType,
+                args: {
+                    id: { type: GraphQLNonNull(GraphQLString) },
+                    input: { type: inputTypeForUpdate }
+                },
+                resolve: async (root, args, context, info) => {
+                    await User.updateOne(
+                       { FirstName: args.id },
+                       args.input
+                    )
+                    return User.findOne({ FirstName: args.id }).exec();
+                }
+            }
         },
     }),
 });
