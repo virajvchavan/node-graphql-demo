@@ -93,4 +93,6 @@ let userSchema = new Schema(
     { timestamps: true }
 );
 
-module.exports = userSchema;
+module.exports = {
+    userSchema
+};

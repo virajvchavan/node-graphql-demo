@@ -10,7 +10,7 @@ const {
     GraphQLID,
     GraphQLString
 } = require("graphql");
-const userSchema = require('./models/User.js');
+const {userSchema} = require('./models/User.js');
 
 const app = express();
 
@@ -25,6 +25,13 @@ const graphQLConfig = {
     exclude: ["_id"], //fields which you want to exclude from mongoose schema
 };
 let userType = createType(graphQLConfig);
+let inputType = createType({
+    name: 'input',
+    description: 'Address Schema',
+    class: "GraphQLInputObjectType",
+    schema: userSchema,
+    exclude: ["_id"]
+});
 
 let User = mongoose.model("User", userSchema);
 
@@ -55,10 +62,10 @@ const graphQLSchema = new GraphQLSchema({
             createUser: {
                 type: userType,
                 args: {
-                    FirstName: { type: GraphQLNonNull(GraphQLString) },
+                    input: { type: inputType },
                 },
                 resolve: (root, args, context, info) => {
-                    var user = new User(args);
+                    var user = new User(args.input);
                     return user.save();
                 },
             },
