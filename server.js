@@ -10,7 +10,7 @@ const {
     GraphQLID,
     GraphQLString
 } = require("graphql");
-const {userSchema, userFields} = require('./models/User.js');
+const userSchema = require('./models/User.js');
 
 const app = express();
 
@@ -26,9 +26,13 @@ const graphQLConfig = {
 };
 let userType = createType(graphQLConfig);
 
-
-let filterInputFields = (userFields) => {
-    [
+let inputTypeForUpdate = createType({
+    name: 'inputForUpdate',
+    description: 'Update User Schema',
+    class: "GraphQLInputObjectType",
+    schema: userSchema,
+    exclude: [
+        "_id",
         "FirstName",
         "MiddleName",
         "LastName",
@@ -39,20 +43,7 @@ let filterInputFields = (userFields) => {
         "PersonalLastName",
         "Salutation",
         "Manager",
-    ].forEach((field) => {
-        delete userFields[field];
-    });
-    return userFields;
-};
-
-let inputSchema = mongoose.Schema(filterInputFields(userFields));
-
-let inputTypeForUpdate = createType({
-    name: 'inputForUpdate',
-    description: 'Update User Schema',
-    class: "GraphQLInputObjectType",
-    schema: inputSchema,
-    exclude: ["_id"]
+    ]
 });
 
 let inputType = createType({

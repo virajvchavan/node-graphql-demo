@@ -92,7 +92,4 @@ let userFields = {
 
 let userSchema = new Schema(userFields, { timestamps: true });
 
-module.exports = {
-    userSchema,
-    userFields
-};
+module.exports = userSchema;
